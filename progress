@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>progress</title>
+    <style>
+        .progress {
+            width: 600px;
+            height: 40px;
+            margin: 200px auto;
+            position: relative;
+            background-color: #CCCCCC;
+        }
+
+        .progressBar {
+            width: 0;
+            height: 100%;
+            background-color: orangered;
+            position: absolute;
+            top: 0;
+            left: 0;
+        }
+
+        .progressDot {
+            width: 20px;
+            height: 60px;
+            background-color: orangered;
+            -webkit-border-radius: 5px;
+            -moz-border-radius: 5px;
+            border-radius: 5px;
+            position: absolute;
+            top: -10px;
+            left: 0;
+        }
+
+        span {
+            position: absolute;
+            left: 640px;
+            top: 5px;
+            font-size: 21px;
+        }
+
+    </style>
+
+</head>
+<body>
+<div class="progress">
+    <div class="progressBar">
+        <div class="progressDot"></div>
+    </div>
+    <span>0%</span>
+</div>
+
+<script>
+    //获取进度条
+    var progress = document.getElementsByClassName('progress')[0];
+    var progressBar = document.getElementsByClassName("progressBar")[0];
+    var progressDot = document.getElementsByClassName("progressDot")[0];
+    var span = document.getElementsByTagName('span')[0];
+    //进度条左侧距离
+    var proLeft = progress.offsetLeft,
+     progressWidth = progress.offsetWidth,
+     dotWidth = progressDot.offsetWidth;
+    progress.onclick = function (event) {
+        var target = event || window.event;
+        //点击位置到文档左侧距离
+        var targetLeft = target.clientX;
+
+        var moveX = targetLeft - proLeft;
+        if (moveX <= progressWidth - dotWidth) {
+            progressDot.style.left = moveX + "px";
+            progressBar.style.width = moveX + "px";
+            span.innerText = parseInt(moveX / (progressWidth - dotWidth) * 100) + "%";
+        }
+
+    };
+    progressDot.onmousedown = function (event) {
+        var begin = event || window.event;
+        var beginX = begin.clientX - progressDot.offsetLeft;
+        document.onmousemove = function (event) {
+            var e = event || window.event;
+            var endX = e.clientX;
+            var moveX = endX - beginX;
+            if (moveX < 0) {
+                moveX = 0;
+            } else if (moveX > progressWidth - dotWidth) {
+                moveX = progressWidth - dotWidth;
+            }
+            progressDot.style.left = moveX + 'px';
+            progressBar.style.width = moveX + "px";
+            span.innerText = parseInt(moveX / (progressWidth - dotWidth) * 100) + "%";
+        }
+    };
+    document.onmouseup = function () {
+        document.onmousemove = null;
+    };
+
+
+</script>
+</body>
+</html>
