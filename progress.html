@@ -59,20 +59,20 @@
     var span = document.getElementsByTagName('span')[0];
     //进度条左侧距离
     var proLeft = progress.offsetLeft,
-     progressWidth = progress.offsetWidth,
-     dotWidth = progressDot.offsetWidth;
+        progressWidth = progress.offsetWidth,
+        dotWidth = progressDot.offsetWidth;
     progress.onclick = function (event) {
         var target = event || window.event;
         //点击位置到文档左侧距离
         var targetLeft = target.clientX;
 
         var moveX = targetLeft - proLeft;
-        if (moveX <= progressWidth - dotWidth) {
-            progressDot.style.left = moveX + "px";
-            progressBar.style.width = moveX + "px";
-            span.innerText = parseInt(moveX / (progressWidth - dotWidth) * 100) + "%";
+        if (moveX > progressWidth - dotWidth) {
+            moveX = progressWidth - dotWidth;
         }
-
+        progressDot.style.left = moveX + "px";
+        progressBar.style.width = moveX + "px";
+        span.innerText = parseInt(moveX / (progressWidth - dotWidth ) * 100) + "%";
     };
     progressDot.onmousedown = function (event) {
         var begin = event || window.event;
@@ -94,7 +94,6 @@
     document.onmouseup = function () {
         document.onmousemove = null;
     };
-
 
 </script>
 </body>
